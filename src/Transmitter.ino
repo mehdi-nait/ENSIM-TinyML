@@ -1,38 +1,15 @@
-/*
-  LED Control
-
-  This example scans for BLE peripherals until one with the advertised service
-  "19b10000-e8f2-537e-4f6c-d104768a1214" UUID is found. Once discovered and connected,
-  it will remotely control the BLE Peripheral's LED, when the button is pressed or released.
-
-  The circuit:
-  - Arduino MKR WiFi 1010, Arduino Uno WiFi Rev2 board, Arduino Nano 33 IoT,
-    Arduino Nano 33 BLE, or Arduino Nano 33 BLE Sense board.
-  - Button with pull-up resistor connected to pin 2.
-
-  You can use it with another board that is compatible with this library and the
-  Peripherals -> LED example.
-
-  This example code is in the public domain.
-*/
-
 #include <ArduinoBLE.h>
 
 // variables for button
-const int buttonPin = 2;
-int oldButtonState = LOW;
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
 
-  // configure the button pin as input
-  pinMode(buttonPin, INPUT);
-
   // initialize the BLE hardware
   BLE.begin();
 
-  Serial.println("BLE Central - LED control");
+  Serial.println("GESTURE RECOGNITION - ENSIM 2022");
 
   // start scanning for peripherals
   BLE.scanForUuid("19b10000-e8f2-537e-4f6c-d104768a1214");

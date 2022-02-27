@@ -81,6 +81,7 @@ void setup() {
 }
 
 void loop() {
+  //int label_id;
   float aX, aY, aZ, gX, gY, gZ;
 
   // wait for significant motion
@@ -135,9 +136,11 @@ void loop() {
           Serial.print(GESTURES[i]);
           Serial.print(": ");
           Serial.println(tflOutputTensor->data.f[i], 6);
+          
         }
         Serial.println();
       }
     }
   }
+
 }
