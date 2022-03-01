@@ -13,7 +13,7 @@
 
 #include <Arduino_LSM9DS1.h>
 
-const float accelerationThreshold = 1.5; // threshold of significant in G's
+const float accelerationThreshold = 2.0; // threshold of significant in G's
 const int numSamples = 50;
 
 int samplesRead = numSamples;
