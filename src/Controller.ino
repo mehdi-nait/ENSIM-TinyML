@@ -1,23 +1,7 @@
-/*
-  LED
-
-  This example creates a BLE peripheral with service that contains a
-  characteristic to control an LED.
-
-  The circuit:
-  - Arduino MKR WiFi 1010, Arduino Uno WiFi Rev2 board, Arduino Nano 33 IoT,
-    Arduino Nano 33 BLE, or Arduino Nano 33 BLE Sense board.
-
-  You can use a generic BLE central app, like LightBlue (iOS and Android) or
-  nRF Connect (Android), to interact with the services and characteristics
-  created in this sketch.
-
-  This example code is in the public domain.
-*/
 
 #include <ArduinoBLE.h>
 
-BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE LED Service
+BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
 BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
@@ -84,31 +68,34 @@ void loop() {
       // use the value to control the LED:
      // if (switchCharacteristic.written()) {
         if (switchCharacteristic.value()==0x00) { 
-            
+            //Accélération
           
-          digitalWrite(RED, HIGH);
-          digitalWrite(ORANGE, LOW);   
-          digitalWrite(GREEN, LOW); 
-          digitalWrite(RED1, LOW);
-          digitalWrite(ORANGE, LOW);
-          digitalWrite(GREEN, HIGH);    
-        }
-        else {                             
-         if (switchCharacteristic.value()==0x01){
           digitalWrite(RED, LOW);
           digitalWrite(ORANGE, LOW);   
           digitalWrite(GREEN, HIGH); 
           digitalWrite(RED1, HIGH);
-          digitalWrite(ORANGE, LOW);
-          digitalWrite(GREEN, LOW); 
-         }
-         else {                             
-          digitalWrite(RED, LOW);
+          digitalWrite(ORANGE1, LOW);
+          digitalWrite(GREEN1,LOW );    
+        }
+        else {           
+                            
+         if (switchCharacteristic.value()==0x01){
+         digitalWrite(RED, LOW);
           digitalWrite(ORANGE, HIGH);   
           digitalWrite(GREEN,LOW ); 
           digitalWrite(RED1, HIGH);
-          digitalWrite(ORANGE, LOW);
+          digitalWrite(ORANGE1, LOW);
+          digitalWrite(GREEN1, LOW);
+         }
+         else {                             
+           //Stop
+          digitalWrite(RED, HIGH);
+          digitalWrite(ORANGE, LOW);   
           digitalWrite(GREEN, LOW); 
+          digitalWrite(RED1, LOW);
+          digitalWrite(ORANGE1, LOW);
+          digitalWrite(GREEN1, HIGH); 
+          
          }
         }
       }
