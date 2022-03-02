@@ -1,88 +1,4 @@
-
-#include <Arduino_LSM9DS1.h>
-
-#include <TensorFlowLite.h>
-#include <tensorflow/lite/micro/all_ops_resolver.h>
-#include <tensorflow/lite/micro/micro_error_reporter.h>
-#include <tensorflow/lite/micro/micro_interpreter.h>
-#include <tensorflow/lite/schema/schema_generated.h>
-#include <tensorflow/lite/version.h>
-
-#include "model.h"
-
-const float accelerationThreshold = 1.5; // threshold of significant in G's
-const int numSamples = 50;
-
-int samplesRead = numSamples;
-
-// global variables used for TensorFlow Lite (Micro)
-tflite::MicroErrorReporter tflErrorReporter;
-
-// pull in all the TFLM ops, you can remove this line and
-// only pull in the TFLM ops you need, if would like to reduce
-// the compiled size of the sketch.
-tflite::AllOpsResolver tflOpsResolver;
-
-const tflite::Model* tflModel = nullptr;
-tflite::MicroInterpreter* tflInterpreter = nullptr;
-TfLiteTensor* tflInputTensor = nullptr;
-TfLiteTensor* tflOutputTensor = nullptr;
-
-// Create a static memory buffer for TFLM, the size may need to
-// be adjusted based on the model you are using
-constexpr int tensorArenaSize = 8 * 1024;
-byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
-
-// array to map gesture index to a name
-const char* GESTURES[] = {
-  "Accelerate",
-  "Slow",
-  "Stop"
-};
-
-#define NUM_GESTURES (sizeof(GESTURES) / sizeof(GESTURES[0]))
-
-void setup() {
-  Serial.begin(9600);
-  while (!Serial);
-
-  // initialize the IMU
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
-  }
-
-  // print out the samples rates of the IMUs
-  Serial.print("Accelerometer sample rate = ");
-  Serial.print(IMU.accelerationSampleRate());
-  Serial.println(" Hz");
-  Serial.print("Gyroscope sample rate = ");
-  Serial.print(IMU.gyroscopeSampleRate());
-  Serial.println(" Hz");
-
-  Serial.println();
-
-  // get the TFL representation of the model byte array
-  tflModel = tflite::GetModel(model);
-  if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
-    Serial.println("Model schema mismatch!");
-    while (1);
-  }
-
-  // Create an interpreter to run the model
-  tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, tensorArenaSize, &tflErrorReporter);
-
-  // Allocate memory for the model's input and output tensors
-  tflInterpreter->AllocateTensors();
-
-  // Get pointers for the model's input and output tensors
-  tflInputTensor = tflInterpreter->input(0);
-  tflOutputTensor = tflInterpreter->output(0);
-}
-
-void loop() {
-  //int label_id;
-  #include <ArduinoBLE.h>
+#include <ArduinoBLE.h>
 
 #include <Arduino_LSM9DS1.h>
 
@@ -298,13 +214,13 @@ void loop() {
 
         if (index==0) {
         // button is pressed, write 0x01 to turn the LED on
-          ledCharacteristic.writeValue((byte)0x01);
+          ledCharacteristic.writeValue((byte)0x00);
           delay(5000);
         } 
         else {
           if(index==1){
           // button is released, write 0x00 to turn the LED off
-          ledCharacteristic.writeValue((byte)0x00);
+          ledCharacteristic.writeValue((byte)0x01);
           delay(5000);
           }
           else{
@@ -323,8 +239,4 @@ void loop() {
     // peripheral disconnected, start scanning again
     BLE.scanForUuid("19b10000-e8f2-537e-4f6c-d104768a1214");
   }
-}
-
-
-
 }
