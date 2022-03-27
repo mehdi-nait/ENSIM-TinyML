@@ -1,11 +1,13 @@
 
 #include <ArduinoBLE.h>
 
-BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service
+BLEService BLService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service
 
-// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 
+BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);// Définir les aratéristiques de l'arduino nano pour établir la commuication Bluetoth
+
+
+//Définir les pins 
 #define RED D2     
 #define ORANGE D3     
 #define GREEN D4
@@ -18,7 +20,7 @@ void setup() {
   Serial.begin(9600);
   while (!Serial);
 
-  // set LED pin to output mode
+  // définir les pins en mode de sortie
   pinMode(RED, OUTPUT);
   pinMode(ORANGE, OUTPUT);
   pinMode(GREEN, OUTPUT);
@@ -26,50 +28,49 @@ void setup() {
   pinMode(ORANGE1, OUTPUT);
   pinMode(GREEN1, OUTPUT);
 
-  // begin initialization
+  //  initialisation de la communiation
   if (!BLE.begin()) {
     Serial.println("starting BLE failed!");
 
     while (1);
   }
 
-  // set advertised local name and service UUID:
-  BLE.setLocalName("LED");
-  BLE.setAdvertisedService(ledService);
+  // changer le nom de la arte
+  BLE.setLocalName("TinyML");
+  BLE.setAdvertisedService(BLService);
 
-  // add the characteristic to the service
-  ledService.addCharacteristic(switchCharacteristic);
+  // ajout des aratéristiques au servie de la carte
+  BLService.addCharacteristic(switchCharacteristic);
 
-  // add service
-  BLE.addService(ledService);
+  // L'ajout du  service
+  BLE.addService(BLService);
 
-  // set the initial value for the characeristic:
+  // Initialisation des caractéristiqes de la carte
   switchCharacteristic.writeValue(0);
 
   // start advertising
   BLE.advertise();
 
-  Serial.println("BLE LED Peripheral");
+  Serial.println("BLE Peripheral");
 }
 
 void loop() {
-  // listen for BLE peripherals to connect:
+  // Demande de connexion:
   BLEDevice central = BLE.central();
 
-  // if a central is connected to peripheral:
+  // Si les deux cartes sont connetés:
   if (central) {
     Serial.print("Connected to central: ");
-    // print the central's MAC address:
+    // Ecrire l'adresse MAC:
     Serial.println(central.address());
 
-    // while the central is still connected to peripheral:
+    // Si les deux cartes sont connetés:
     while (central.connected()) {
-      // if the remote device wrote to the characteristic,
-      // use the value to control the LED:
-     // if (switchCharacteristic.written()) {
+      
+     
         if (switchCharacteristic.value()==0x00) { 
-            //Accélération
-          
+           
+          //Accélération
           digitalWrite(RED, LOW);
           digitalWrite(ORANGE, LOW);   
           digitalWrite(GREEN, HIGH); 
@@ -78,7 +79,7 @@ void loop() {
           digitalWrite(GREEN1,LOW );    
         }
         else {           
-                            
+           //Ralentir                
          if (switchCharacteristic.value()==0x01){
          digitalWrite(RED, LOW);
           digitalWrite(ORANGE, HIGH);   
@@ -102,7 +103,7 @@ void loop() {
     }
  
 
-    // when the central disconnects, print it out:
+    // Si les deux cartes sont connectés:
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
   }

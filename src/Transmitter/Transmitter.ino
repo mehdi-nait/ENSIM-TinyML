@@ -29,7 +29,7 @@ void loop() {
     Serial.print(peripheral.advertisedServiceUuid());
     Serial.println();
 
-    if (peripheral.localName() != "LED") {
+    if (peripheral.localName() != "TinyML") {
       return;
     }
 
@@ -68,11 +68,11 @@ void controlLed(BLEDevice peripheral) {
   BLECharacteristic ledCharacteristic = peripheral.characteristic("19b10001-e8f2-537e-4f6c-d104768a1214");
 
   if (!ledCharacteristic) {
-    Serial.println("Peripheral does not have LED characteristic!");
+    Serial.println("Peripheral does not have characteristic!");
     peripheral.disconnect();
     return;
   } else if (!ledCharacteristic.canWrite()) {
-    Serial.println("Peripheral does not have a writable LED characteristic!");
+    Serial.println("Peripheral does not have a writable characteristic!");
     peripheral.disconnect();
     return;
   }
