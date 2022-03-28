@@ -1,5 +1,3 @@
-
-
 #include <Arduino_LSM9DS1.h>
 
 const float accelerationThreshold = 2.0; // threshold of significant in G's
@@ -51,6 +49,7 @@ void loop() {
       IMU.readAcceleration(aX, aY, aZ);
       IMU.readGyroscope(gX, gY, gZ);
 
+      //Normalizing data (mapping each value to [-1,1])
       aX = (aX + 4.0) / 8.0;
       aY = (aY + 4.0) / 8.0;
       aZ = (aZ + 4.0) / 8.0;

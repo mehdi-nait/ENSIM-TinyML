@@ -240,10 +240,3 @@ void loop() {
     BLE.scanForUuid("19b10000-e8f2-537e-4f6c-d104768a1214");
   }
 }
-<<<<<<< HEAD:src/Main/Main.ino
-
-
-
-}
-=======
->>>>>>> e119799916dba2c32286fb8355ac872d36c16a08:src/Main.ino

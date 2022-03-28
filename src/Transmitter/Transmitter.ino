@@ -79,14 +79,7 @@ void controlLed(BLEDevice peripheral) {
 
   while (peripheral.connected()) 
   {
-    // while the peripheral is connected
-
-    // read the button pin
-    //int buttonState = digitalRead(buttonPin);
-
-   // if (oldButtonState != buttonState) {
-      // button changed
-      //oldButtonState = buttonState;
+      //for testing purpose only (send diffrent pulses to change led states)
       for(int a=0;a<3;a++){
       if (a==0) {
         // button is pressed, write 0x01 to turn the LED on
